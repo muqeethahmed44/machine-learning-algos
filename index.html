@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Machine Learning Algorithms Framework</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      h1 {
+        color: #2d3748;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: #718096;
+        font-size: 1.1em;
+      }
+
+      .author-info {
+        margin-top: 15px;
+        color: #4a5568;
+        font-size: 0.95em;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 30px 0;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #f7fafc;
+        border-radius: 8px;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+      }
+
+      .supervised-color {
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+      }
+      .unsupervised-color {
+        background: linear-gradient(135deg, #48bb78, #38a169);
+      }
+
+      .algorithms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .algorithm-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 5px solid;
+      }
+
+      .algorithm-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .algorithm-card.supervised {
+        border-left-color: #3182ce;
+        background: linear-gradient(to right, #ebf8ff 0%, white 10%);
+      }
+
+      .algorithm-card.unsupervised {
+        border-left-color: #38a169;
+        background: linear-gradient(to right, #f0fff4 0%, white 10%);
+      }
+
+      .algorithm-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+      }
+
+      .algorithm-name {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #2d3748;
+      }
+
+      .algorithm-type {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .type-supervised {
+        background: #bee3f8;
+        color: #2c5282;
+      }
+
+      .type-unsupervised {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+
+      .domains {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 12px 0;
+      }
+
+      .domain-tag {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8em;
+        font-weight: 500;
+      }
+
+      .domain-tabular {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+
+      .domain-cv {
+        background: #feebc8;
+        color: #7c2d12;
+      }
+
+      .domain-nlp {
+        background: #e9d8fd;
+        color: #44337a;
+      }
+
+      .domain-genai {
+        background: #fef5e7;
+        color: #744210;
+      }
+
+      .explanation {
+        color: #4a5568;
+        font-size: 0.95em;
+        line-height: 1.6;
+        margin: 12px 0;
+      }
+
+      .use-cases {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .use-cases-title {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 6px;
+        font-size: 0.9em;
+      }
+
+      .use-cases-list {
+        color: #4a5568;
+        font-size: 0.9em;
+        line-height: 1.5;
+      }
+
+      .connections-section {
+        margin-top: 40px;
+        padding: 30px;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 12px;
+      }
+
+      .connections-title {
+        font-size: 1.8em;
+        color: #2d3748;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .relationship-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .relationship-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .relationship-card h3 {
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+
+      .relationship-card p {
+        color: #4a5568;
+        line-height: 1.6;
+        font-size: 0.95em;
+      }
+
+      footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 2px solid #e2e8f0;
+        text-align: center;
+        color: #718096;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Machine Learning Algorithms Framework</h1>
+        <p class="subtitle">
+          A Comprehensive Visual Guide to ML Algorithm Classification
+        </p>
+        <p class="author-info">
+          Muqeeth Mohammad | AIML-501 Model Development | Indiana Wesleyan
+          University
+        </p>
+      </header>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color supervised-color"></div>
+          <span
+            ><strong>Supervised Learning:</strong> Learns from labeled
+            data</span
+          >
+        </div>
+        <div class="legend-item">
+          <div class="legend-color unsupervised-color"></div>
+          <span
+            ><strong>Unsupervised Learning:</strong> Finds patterns in unlabeled
+            data</span
+          >
+        </div>
+      </div>
+
+      <div class="algorithms-grid">
+        <!-- Algorithm 1: Linear Regression -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Linear Regression</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+          </div>
+          <div class="explanation">
+            Predicts continuous numerical values by finding the best-fit line
+            through data points. The algorithm learns the relationship between
+            input features and target values to make predictions on new data.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • House price prediction based on size and location<br />
+              • Sales forecasting from historical data<br />
+              • Temperature prediction from weather features
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 2: Decision Tree -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Decision Tree</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+          </div>
+          <div class="explanation">
+            Creates a tree-like model of decisions based on features. Each
+            internal node represents a test on a feature, branches represent
+            outcomes, and leaf nodes represent final predictions or
+            classifications.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Customer churn prediction in telecommunications<br />
+              • Loan approval decision systems<br />
+              • Medical diagnosis based on symptoms
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 3: Random Forest -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Random Forest</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+          </div>
+          <div class="explanation">
+            Combines multiple decision trees to improve accuracy and reduce
+            overfitting. Each tree votes on the final prediction, and the
+            majority vote determines the outcome. Works by training each tree on
+            random subsets of data and features.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Credit card fraud detection<br />
+              • Customer behavior prediction in e-commerce<br />
+              • Stock market trend analysis
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 4: Support Vector Machine -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Support Vector Machine</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+            <span class="domain-tag domain-cv">Computer Vision</span>
+          </div>
+          <div class="explanation">
+            Finds the optimal boundary (hyperplane) that separates different
+            classes with the maximum margin. Works well for both linear and
+            non-linear classification by using kernel functions to transform
+            data into higher dimensions.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Email spam classification<br />
+              • Handwritten digit recognition<br />
+              • Cancer detection from medical imaging
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 5: Convolutional Neural Network -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Convolutional Neural Network (CNN)</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-cv">Computer Vision</span>
+          </div>
+          <div class="explanation">
+            Specialized neural network designed for processing grid-like data
+            such as images. Uses convolutional layers to automatically learn
+            spatial hierarchies of features, from simple edges to complex
+            objects.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Facial recognition systems<br />
+              • Autonomous vehicle object detection<br />
+              • Medical image analysis for disease diagnosis
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 6: Recurrent Neural Network -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Recurrent Neural Network (RNN)</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-nlp">NLP</span>
+          </div>
+          <div class="explanation">
+            Neural network architecture designed for sequential data. Maintains
+            memory of previous inputs through feedback loops, making it ideal
+            for time-series and text data where order matters.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Language translation services<br />
+              • Speech recognition systems<br />
+              • Stock price prediction using historical data
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 7: Transformer -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Transformer</div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-nlp">NLP</span>
+            <span class="domain-tag domain-genai">Generative AI</span>
+          </div>
+          <div class="explanation">
+            Uses self-attention mechanisms to process entire sequences
+            simultaneously rather than sequentially. Captures long-range
+            dependencies in data and forms the foundation of modern language
+            models like GPT and BERT.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • ChatGPT and other conversational AI systems<br />
+              • Document summarization and translation<br />
+              • Code generation and completion
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 8: Generative Adversarial Network -->
+        <div class="algorithm-card supervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">
+              Generative Adversarial Network (GAN)
+            </div>
+            <div class="algorithm-type type-supervised">Supervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-cv">Computer Vision</span>
+            <span class="domain-tag domain-genai">Generative AI</span>
+          </div>
+          <div class="explanation">
+            Consists of two neural networks competing against each other: a
+            generator creates synthetic data while a discriminator evaluates
+            authenticity. Through this adversarial process, the generator learns
+            to create increasingly realistic outputs.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Realistic image generation and photo enhancement<br />
+              • Creating synthetic training data for AI models<br />
+              • Video game asset generation
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 9: K-Means Clustering -->
+        <div class="algorithm-card unsupervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">K-Means Clustering</div>
+            <div class="algorithm-type type-unsupervised">Unsupervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+            <span class="domain-tag domain-cv">Computer Vision</span>
+          </div>
+          <div class="explanation">
+            Partitions data into K distinct groups based on similarity.
+            Iteratively assigns data points to the nearest cluster center and
+            updates centers until convergence. No labels required as it
+            discovers natural groupings.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Customer segmentation for targeted marketing<br />
+              • Image compression by color clustering<br />
+              • Anomaly detection in network traffic
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm 10: Principal Component Analysis -->
+        <div class="algorithm-card unsupervised">
+          <div class="algorithm-header">
+            <div class="algorithm-name">Principal Component Analysis (PCA)</div>
+            <div class="algorithm-type type-unsupervised">Unsupervised</div>
+          </div>
+          <div class="domains">
+            <span class="domain-tag domain-tabular">Tabular Data</span>
+            <span class="domain-tag domain-cv">Computer Vision</span>
+          </div>
+          <div class="explanation">
+            Reduces data dimensionality by identifying principal components that
+            capture the most variance. Transforms data into a new coordinate
+            system where the greatest variance lies along the first coordinates.
+          </div>
+          <div class="use-cases">
+            <div class="use-cases-title">Example Applications:</div>
+            <div class="use-cases-list">
+              • Data visualization and exploration<br />
+              • Feature extraction before model training<br />
+              • Noise reduction in sensor data
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connections-section">
+        <h2 class="connections-title">
+          Algorithm Relationships and Connections
+        </h2>
+        <div class="relationship-grid">
+          <div class="relationship-card">
+            <h3>Supervised vs. Unsupervised</h3>
+            <p>
+              Supervised algorithms require labeled training data and learn to
+              map inputs to known outputs. Unsupervised algorithms find hidden
+              patterns in unlabeled data without predetermined categories.
+            </p>
+          </div>
+
+          <div class="relationship-card">
+            <h3>Tree-Based Methods</h3>
+            <p>
+              Decision Trees and Random Forests share a common foundation.
+              Random Forest improves upon single Decision Trees by combining
+              multiple trees to reduce overfitting and increase accuracy through
+              ensemble learning.
+            </p>
+          </div>
+
+          <div class="relationship-card">
+            <h3>Neural Network Family</h3>
+            <p>
+              CNNs, RNNs, Transformers, and GANs all belong to the neural
+              network family but are specialized for different data types. CNNs
+              excel at spatial data, RNNs handle sequences, Transformers process
+              text efficiently, and GANs generate new data.
+            </p>
+          </div>
+
+          <div class="relationship-card">
+            <h3>Dimensionality Reduction</h3>
+            <p>
+              PCA is often used as a preprocessing step before applying other
+              algorithms. It reduces computational complexity and can improve
+              performance of supervised methods like SVM or Random Forest by
+              eliminating noise.
+            </p>
+          </div>
+
+          <div class="relationship-card">
+            <h3>Domain Specialization</h3>
+            <p>
+              Tabular data typically uses traditional ML algorithms (Linear
+              Regression, Decision Trees, Random Forest). Computer Vision relies
+              on CNNs and GANs. NLP primarily uses RNNs and Transformers.
+              Generative AI combines multiple architectures.
+            </p>
+          </div>
+
+          <div class="relationship-card">
+            <h3>Evolution of Complexity</h3>
+            <p>
+              Algorithms have evolved from simple linear models to complex
+              neural networks. Modern approaches like Transformers build upon
+              earlier innovations in neural networks, incorporating attention
+              mechanisms that revolutionized NLP tasks.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>
+          <strong>Portfolio Artifact:</strong> ML Algorithm Classification
+          Framework
+        </p>
+        <p>Created for AIML-501 Model Development | Fall 2025</p>
+        <p>
+          Indiana Wesleyan University | Master of Science in Computer
+          Information Systems (AI Specialization)
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
